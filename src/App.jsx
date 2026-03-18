@@ -77,7 +77,7 @@ const botData = {
 // 智能關鍵詞映射 - 更容易擴展
 const keywordCategories = [
   { 
-    keywords: ["關於我", "背景", "是誰", "自我介紹", "泰翔", "你叫什麼", "你是誰", "誰是泰翔", "認識你", "了解你", "個人", "簡介", "你好", "嗨", "你", "請介紹"],
+    keywords: ["關於我", "背景", "是誰", "自我介紹", "泰翔", "你叫什麼", "你是誰", "誰是泰翔", "認識你", "了解你", "個人", "簡介", "你好", "請介紹"],
     value: botData.aboutMe 
   },
   { 
@@ -93,7 +93,7 @@ const keywordCategories = [
     value: botData.skills 
   },
   { 
-    keywords: ["聯絡", "Email", "聯繫", "信箱", "手機", "聯絡方式", "怎麼聯繫", "聯繫你", "請聯繫", "找你", "聯繫", "如何聯絡", "怎樣聯繫", "聯系"],
+    keywords: ["聯絡", "Email", "聯繫", "信箱", "手機", "聯絡方式", "怎麼聯繫", "聯繫你", "請聯繫", "找你", "如何聯絡", "怎樣聯繫", "聯系", "聯絡方法"],
     value: botData.contact 
   },
   { 
@@ -125,20 +125,33 @@ const calculateSimilarity = (text1, text2) => {
   return intersection.size / union.size;
 };
 
-// 智能查詢函數 - 已優化
+// 智能查詢函數 - 優化版本（優先匹配更長的關鍵詞）
 const findBestMatch = (userText) => {
   const lowerUserText = userText.toLowerCase();
   
-  // 第一層：精確匹配（任何關鍵詞完全在用戶輸入中）
+  // 收集所有可能的匹配
+  const matches = [];
+  
   for (const category of keywordCategories) {
     for (const keyword of category.keywords) {
       if (lowerUserText.includes(keyword)) {
-        return category.value;
+        matches.push({
+          category: category.value,
+          keyword: keyword,
+          length: keyword.length  // 記錄關鍵詞長度
+        });
       }
     }
   }
   
-  // 第二層：相似度匹配（降低閾值到 0.15，更容易匹配）
+  // 如果有匹配，優先返回最長的關鍵詞對應的分類
+  // （因為更長的詞語通常更具體）
+  if (matches.length > 0) {
+    matches.sort((a, b) => b.length - a.length);
+    return matches[0].category;
+  }
+  
+  // 如果沒有精確匹配，才進行相似度匹配
   let bestMatch = null;
   let highestScore = 0;
   
@@ -146,7 +159,7 @@ const findBestMatch = (userText) => {
     for (const keyword of category.keywords) {
       const score = calculateSimilarity(userText, keyword);
       
-      if (score > highestScore && score > 0.15) {  // 降低閾值
+      if (score > highestScore && score > 0.15) {
         highestScore = score;
         bestMatch = category.value;
       }
