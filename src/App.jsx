@@ -4,37 +4,74 @@ import React, { useState, useEffect, useRef } from 'react';
 const botData = {
   greeting: "您好！我是泰翔的分身 🤖。您可以透過下方按鈕或直接輸入想了解的內容（如：背景、作品、技能等）。請問你想先看哪一部分？",
   
-  aboutMe: [
-    "🏠 **關於我 (個人背景)**\n您好，我是陳泰翔，出生於彰化。從小與父親同住，身為家中的長兄，這讓我培養了較強的責任感與照顧團隊的性格。",
-    "🚀 **職業起點**\n退伍後我選擇在台中的遊戲公司深耕，專注於 **3D模型製作** 與 **動態動作控制**，這段經歷為我打下了堅實的技術基礎。",
-    "🎬 **動畫與電影夢**\n2013年我決定挑戰台北，投身於國產動畫與電影專案。參與了包括《奇人密碼》與紀錄片《釋悟因》等具代表性的作品，在團隊協作中展現了高度的適應力。",
-    "🎮 **管理實務**\n2014年後，我開始帶領約 7 人的動畫部門，這讓我深刻體會到「溝通」才是推動大型專案成功的核心要素。"
-  ],
+  aboutMe: {
+    responses: [
+      "🏠 **關於我 (個人背景)**\n您好，我是陳泰翔，出生於彰化。從小與父親同住，身為家中的長兄，這讓我培養了較強的責任感與照顧團隊的性格。",
+      "🚀 **職業起點**\n退伍後我選擇在台中的遊戲公司深耕，專注於 **3D模型製作** 與 **動態動作控制**，這段經歷為我打下了堅實的技術基礎。",
+      "🎬 **動畫與電影夢**\n2013年我決定挑戰台北，投身於國產動畫與電影專案。參與了包括《奇人密碼》與紀錄片《釋悟因》等具代表性的作品，在團隊協作中展現了高度的適應力。",
+      "🎮 **管理實務**\n2014年後，我開始帶領約 7 人的動畫部門，這讓我深刻體會到「溝通」才是推動大型專案成功的核心要素。"
+    ],
+    followUp: ["📅 我的工作經歷怎樣？", "🛠️ 你有哪些技能？", "✉️ 怎麼聯絡你？"]
+  },
 
-  experience: [
-    "📅 **2012 ~ 2013 (賽席爾商泛力)**\n擔任 3D 美工設計，負責 3D 模型、特效與燈光控制。代表作品為《遠征三國》手遊。",
-    "📅 **2013 ~ 2014 (合邑映像)**\n擔任多媒體動畫師，專攻 3D 模型與動作製作，參與過《電影-奇人密碼》與《記錄片-釋悟因》。",
-    "📅 **2014 ~ 至今 (傳奇網路)**\n目前擔任 **多媒體開發主管**。我負責領導團隊使用 Unity 與自研編輯器製作過場動畫，並對接行銷部門製作《AE》、《Premiere》宣傳影片。我也負責審核品質與跨部門的關鍵溝通。"
-  ],
+  experience: {
+    responses: [
+      "📅 **2012 ~ 2013 (賽席爾商泛力)**\n擔任 3D 美工設計，負責 3D 模型、特效與燈光控制。代表作品為《遠征三國》手遊。",
+      "📅 **2013 ~ 2014 (合邑映像)**\n擔任多媒體動畫師，專攻 3D 模型與動作製作，參與過《電影-奇人密碼》與《記錄片-釋悟因》。",
+      "📅 **2014 ~ 至今 (傳奇網路)**\n目前擔任 **多媒體開發主管**。我負責領導團隊使用 Unity 與自研編輯器製作過場動畫，並對接行銷部門製作《AE》、《Premiere》宣傳影片。我也負責審核品質與跨部門的關鍵溝通。"
+    ],
+    followUp: ["🏠 了解更多我的背景？", "🛠️ 我掌握什麼技能？", "📁 看看我的作品？"]
+  },
 
-  portfolio: "太棒了！這是我的精選作品集，歡迎點擊查看：\n\n🔗 https://jay20040121.wixsite.com/website-5\n\n裡面有更多動態展示，看完可以再回來跟我聊聊喔！",
+  portfolio: {
+    responses: [
+      "太棒了！這是我的精選作品集，歡迎點擊查看：\n\n🔗 https://jay20040121.wixsite.com/website-5\n\n裡面有更多動態展示，看完可以再回來跟我聊聊喔！"
+    ],
+    followUp: ["💼 想了解我的工作經驗？", "🛠️ 看看我會什麼技能？", "✉️ 如何聯繫我？"]
+  },
+
+  skills: {
+    responses: [
+      "🛠️ **專業軟體工具**\n- 遊戲引擎：Unity\n- 3D 建模：MAYA\n- 視覺特效：After Effects、Premiere\n- 設計：Photoshop\n- 辦公：Excel、PowerPoint",
+      "🎨 **核心優勢**\n- 多媒體影像處理、電腦動畫設計\n- **AIGC 設計應用**\n- 團隊領導與跨部門諮詢"
+    ],
+    followUp: ["🏠 看看我的背景？", "📅 想了解我的經歷？", "💼 請聯繫我！"]
+  },
+
+  education: {
+    responses: [
+      "🎓 **學歷資訊**\n- 明道大學 數位多媒體設計系 (學士)"
+    ],
+    followUp: ["📜 聽聽我的興趣？", "💼 了解我的工作？", "✉️ 聯繫我？"]
+  },
+
+  interests: {
+    responses: [
+      "📜 **我的興趣**\n- 平常除了熱衷於影像創作，我也喜歡玩桌遊與密室逃脫，這些活動能訓練邏輯思維。此外，跳舞和唱歌是我放鬆並尋找靈感的好方法！"
+    ],
+    followUp: ["🏠 更多關於我？", "💼 我的工作經歷？", "✉️ 如何聯繫？"]
+  },
+
+  personalStats: {
+    responses: [
+      "🏆 **個人基本資料**\n- 身高：174cm\n- 體重：69kg\n- 充滿活力且熱愛學習新科技！"
+    ],
+    followUp: ["📜 我的興趣是？", "🛠️ 我的技能？", "✉️ 聯繫方式？"]
+  },
+
+  contact: {
+    responses: [
+      "📧 **聯絡資訊**\n如果您對我的背景有興趣，歡迎隨時聯絡我：\n\n信箱：**jay20040121@gmail.com**\n期待與您進一步交流！"
+    ],
+    followUp: ["🏠 我的背景？", "💼 我的工作？", "🛠️ 我的技能？"]
+  },
   
-  skills: [
-    "🛠️ **專業軟體工具**\n- 遊戲引擎：Unity\n- 3D 建模：MAYA\n- 視覺特效：After Effects、Premiere\n- 設計：Photoshop\n- 辦公：Excel、PowerPoint",
-    "🎨 **核心優勢**\n- 多媒體影像處理、電腦動畫設計\n- **AIGC 設計應用**\n- 團隊領導與跨部門諮詢"
-  ],
-
-  education: [
-    "🎓 **學歷資訊**\n- 明道大學 數位多媒體設計系 (學士)",
-  ],
-
-  interests: "📜 **我的興趣**\n- 平常除了熱衷於影像創作，我也喜歡玩桌遊與密室逃脫，這些活動能訓練邏輯思維。此外，跳舞和唱歌是我放鬆並尋找靈感的好方法！",
-
-  personalStats: "🏆 **個人基本資料**\n- 身高：174cm\n- 體重：69kg\n- 充滿活力且熱愛學習新科技！",
-  
-  contact: "📧 **聯絡資訊**\n如果您對我的背景有興趣，歡迎隨時聯絡我：\n\n信箱：**jay20040121@gmail.com**\n期待與您進一步交流！",
-  
-  unknown: "不好意思，我還在學習中 😅。您可以嘗試點擊下方的按鈕，或者直接問我「你參與過哪些作品？」或「你會哪些軟體？」"
+  unknown: {
+    responses: [
+      "不好意思，我還在學習中 😅。您可以嘗試點擊下方的按鈕，或者直接問我「你參與過哪些作品？」或「你會哪些軟體？」"
+    ],
+    followUp: ["👤 關於我", "💼 工作經歷", "🛠️ 專業技能"]
+  }
 };
 
 // 智能關鍵詞映射 - 更容易擴展
@@ -65,7 +102,7 @@ const keywordCategories = [
   },
   { 
     keywords: ["興趣", "愛好", "喜歡", "業餘"],
-    value: [botData.interests] 
+    value: botData.interests 
   },
   { 
     keywords: ["身高", "體重", "身材", "多重", "多高", "基本資料"],
@@ -142,6 +179,7 @@ export default function App() {
   const [messages, setMessages] = useState([{ text: botData.greeting, sender: 'bot' }]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [followUpQuestions, setFollowUpQuestions] = useState([]);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -186,13 +224,15 @@ export default function App() {
     ));
   };
 
-  const sendBotMessages = async (responses) => {
+  const sendBotMessages = async (responses, followUp = []) => {
     setIsTyping(true);
     const responseArray = Array.isArray(responses) ? responses : [responses];
     for (let i = 0; i < responseArray.length; i++) {
       await new Promise(resolve => setTimeout(resolve, 800));
       setMessages(prev => [...prev, { text: responseArray[i], sender: 'bot' }]);
     }
+    // 設置後續問題
+    setFollowUpQuestions(followUp);
     setIsTyping(false);
   };
 
@@ -200,10 +240,18 @@ export default function App() {
     if (!text.trim() || isTyping) return;
     setMessages(prev => [...prev, { text: text, sender: 'user' }]);
     setInputText("");
+    setFollowUpQuestions([]); // 清除舊的後續問題
 
     // 使用智能相似度匹配代替簡單的字符串包含
-    const foundResponse = findBestMatch(text);
-    sendBotMessages(foundResponse || botData.unknown);
+    const foundCategory = findBestMatch(text);
+    
+    if (foundCategory) {
+      const responses = foundCategory.responses || foundCategory;
+      const followUp = foundCategory.followUp || [];
+      sendBotMessages(responses, followUp);
+    } else {
+      sendBotMessages(botData.unknown.responses, botData.unknown.followUp);
+    }
   };
 
   const customStyles = `
@@ -281,18 +329,32 @@ export default function App() {
           </div>
         </div>
 
-        {/* Quick Replies - 亮藍色樣式 */}
+        {/* Quick Replies / Follow-up Questions */}
         <div className="bg-white/80 backdrop-blur-md pt-3 pb-3 border-t border-slate-100 relative z-20">
           <div className="px-4 flex flex-wrap justify-center gap-2">
-            {quickReplies.map((reply, index) => (
-              <button
-                key={index}
-                onClick={() => handleSend(reply.keyword)}
-                className="bg-[#ebf5ff] border border-[#cce4ff] px-4 py-2 rounded-full text-[12px] font-bold text-[#2563eb] hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all active:scale-95 shadow-sm"
-              >
-                {reply.label}
-              </button>
-            ))}
+            {followUpQuestions.length > 0 ? (
+              // 顯示後續問題
+              followUpQuestions.map((question, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSend(question)}
+                  className="bg-gradient-to-r from-purple-400 to-pink-400 border border-purple-300 px-4 py-2 rounded-full text-[12px] font-bold text-white hover:from-purple-500 hover:to-pink-500 transition-all active:scale-95 shadow-md"
+                >
+                  {question}
+                </button>
+              ))
+            ) : (
+              // 顯示快速回覆按鈕
+              quickReplies.map((reply, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSend(reply.keyword)}
+                  className="bg-[#ebf5ff] border border-[#cce4ff] px-4 py-2 rounded-full text-[12px] font-bold text-[#2563eb] hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all active:scale-95 shadow-sm"
+                >
+                  {reply.label}
+                </button>
+              ))
+            )}
           </div>
         </div>
 
