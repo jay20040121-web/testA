@@ -58,7 +58,7 @@ const quickReplies = [
 
 const Avatar = ({ isTyping = false }) => {
   const [imgError, setImgError] = useState(false);
-  const imgUrl = "S__364150787.jpg";
+  const imgUrl = "/S__364150787.jpg";
 
   return (
     <div className={`flex-shrink-0 w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden flex items-center justify-center ${imgError ? 'bg-indigo-500' : 'bg-slate-200'}`}>
