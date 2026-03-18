@@ -33,7 +33,7 @@ const botData = {
   skills: {
     responses: [
       "🛠️ **專業軟體工具**\n- 遊戲引擎：Unity\n- 3D 建模：MAYA\n- 視覺特效：After Effects、Premiere\n- 設計：Photoshop\n- 辦公：Excel、PowerPoint",
-      "🎨 **核心優勢**\n- 多媒體影像處理、電腦動畫設計\n- **AIGC 設計應用**\n- 團隊領導與跨部門諮詢"
+      "🎨 **適合職位**\n- 多媒體影像處理、電腦動畫設計\n- **AIGC 設計應用**\n- 團隊領導與跨部門諮詢"
     ],
     followUp: ["🏠 看看我的背景？", "📅 想了解我的經歷？", "💼 請聯繫我！"]
   },
