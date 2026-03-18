@@ -37,15 +37,77 @@ const botData = {
   unknown: "不好意思，我還在學習中 😅。您可以嘗試點擊下方的按鈕，或者直接問我「你參與過哪些作品？」或「你會哪些軟體？」"
 };
 
-const keywordMap = [
-  { keys: ["關於我", "背景", "是誰", "自我介紹", "泰翔"], value: botData.aboutMe },
-  { keys: ["經歷", "工作", "公司", "主管", "傳奇網路", "合邑", "賽席爾", "工作經歷"], value: botData.experience },
-  { keys: ["作品", "專案", "網址", "連結", "Wix", "website", "作品集"], value: botData.portfolio },
-  { keys: ["技能", "軟體", "專長", "工具", "會什麼", "Unity", "Maya", "專業技能", "AIGC"], value: botData.skills },
-  { keys: ["聯絡", "Email", "聯繫", "信箱", "手機"], value: botData.contact },
-  { keys: ["學歷", "學校", "大學", "畢業", "明道", "興趣"], value: [botData.education[0], botData.interests] },
-  { keys: ["身高", "體重", "身材", "多重", "多高"], value: botData.personalStats }
+// 智能關鍵詞映射 - 更容易擴展
+const keywordCategories = [
+  { 
+    keywords: ["關於我", "背景", "是誰", "自我介紹", "泰翔", "你叫什麼", "你是誰", "誰是泰翔", "認識你", "了解你", "個人", "簡介"],
+    value: botData.aboutMe 
+  },
+  { 
+    keywords: ["經歷", "工作", "公司", "主管", "傳奇網路", "合邑", "賽席爾", "工作經歷", "職位", "做過什麼", "職業"],
+    value: botData.experience 
+  },
+  { 
+    keywords: ["作品", "專案", "網址", "連結", "Wix", "website", "作品集", "作品展示", "看你"],
+    value: botData.portfolio 
+  },
+  { 
+    keywords: ["技能", "軟體", "專長", "工具", "會什麼", "Unity", "Maya", "專業技能", "AIGC", "技術", "能力", "掌握"],
+    value: botData.skills 
+  },
+  { 
+    keywords: ["聯絡", "Email", "聯繫", "信箱", "手機", "聯絡方式", "怎麼聯繫", "聯繫你"],
+    value: botData.contact 
+  },
+  { 
+    keywords: ["學歷", "學校", "大學", "畢業", "明道"],
+    value: botData.education 
+  },
+  { 
+    keywords: ["興趣", "愛好", "喜歡", "業餘"],
+    value: [botData.interests] 
+  },
+  { 
+    keywords: ["身高", "體重", "身材", "多重", "多高", "基本資料"],
+    value: botData.personalStats 
+  }
 ];
+
+// 計算文本相似度 (Jaccard相似度)
+const calculateSimilarity = (text1, text2) => {
+  // 分詞並轉小寫
+  const words1 = new Set(text1.toLowerCase().match(/[\u4e00-\u9fa5a-z0-9]+/g) || []);
+  const words2 = new Set(text2.toLowerCase().match(/[\u4e00-\u9fa5a-z0-9]+/g) || []);
+  
+  if (words1.size === 0 && words2.size === 0) return 0;
+  
+  // 交集和並集
+  const intersection = new Set([...words1].filter(x => words2.has(x)));
+  const union = new Set([...words1, ...words2]);
+  
+  return intersection.size / union.size;
+};
+
+// 智能查詢函數
+const findBestMatch = (userText) => {
+  let bestMatch = null;
+  let highestScore = 0;
+  
+  // 遍歷所有類別
+  for (const category of keywordCategories) {
+    // 計算用戶輸入與類別中所有關鍵詞的最高相似度
+    for (const keyword of category.keywords) {
+      const score = calculateSimilarity(userText, keyword);
+      
+      if (score > highestScore && score > 0.25) {
+        highestScore = score;
+        bestMatch = category.value;
+      }
+    }
+  }
+  
+  return bestMatch;
+};
 
 const quickReplies = [
   { label: "👤 關於我", keyword: "關於我" },
@@ -139,14 +201,8 @@ export default function App() {
     setMessages(prev => [...prev, { text: text, sender: 'user' }]);
     setInputText("");
 
-    let foundResponse = null;
-    for (const item of keywordMap) {
-      if (item.keys.some(k => text.toLowerCase().includes(k.toLowerCase()))) {
-        foundResponse = item.value;
-        break;
-      }
-    }
-
+    // 使用智能相似度匹配代替簡單的字符串包含
+    const foundResponse = findBestMatch(text);
     sendBotMessages(foundResponse || botData.unknown);
   };
 
