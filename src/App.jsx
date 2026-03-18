@@ -77,40 +77,40 @@ const botData = {
 // 智能關鍵詞映射 - 更容易擴展
 const keywordCategories = [
   { 
-    keywords: ["關於我", "背景", "是誰", "自我介紹", "泰翔", "你叫什麼", "你是誰", "誰是泰翔", "認識你", "了解你", "個人", "簡介"],
+    keywords: ["關於我", "背景", "是誰", "自我介紹", "泰翔", "你叫什麼", "你是誰", "誰是泰翔", "認識你", "了解你", "個人", "簡介", "你好", "嗨", "你", "請介紹"],
     value: botData.aboutMe 
   },
   { 
-    keywords: ["經歷", "工作", "公司", "主管", "傳奇網路", "合邑", "賽席爾", "工作經歷", "職位", "做過什麼", "職業"],
+    keywords: ["經歷", "工作", "公司", "主管", "傳奇網路", "合邑", "賽席爾", "工作經歷", "職位", "做過什麼", "職業", "在哪", "去過", "待過", "任職"],
     value: botData.experience 
   },
   { 
-    keywords: ["作品", "專案", "網址", "連結", "Wix", "website", "作品集", "作品展示", "看你"],
+    keywords: ["作品", "專案", "網址", "連結", "Wix", "website", "作品集", "作品展示", "看看", "示例", "案例", "成品"],
     value: botData.portfolio 
   },
   { 
-    keywords: ["技能", "軟體", "專長", "工具", "會什麼", "Unity", "Maya", "專業技能", "AIGC", "技術", "能力", "掌握"],
+    keywords: ["技能", "軟體", "專長", "工具", "會什麼", "Unity", "Maya", "專業技能", "AIGC", "技術", "能力", "掌握", "擅長", "懂", "精通"],
     value: botData.skills 
   },
   { 
-    keywords: ["聯絡", "Email", "聯繫", "信箱", "手機", "聯絡方式", "怎麼聯繫", "聯繫你"],
+    keywords: ["聯絡", "Email", "聯繫", "信箱", "手機", "聯絡方式", "怎麼聯繫", "聯繫你", "請聯繫", "找你", "聯繫", "如何聯絡", "怎樣聯繫", "聯系"],
     value: botData.contact 
   },
   { 
-    keywords: ["學歷", "學校", "大學", "畢業", "明道"],
+    keywords: ["學歷", "學校", "大學", "畢業", "明道", "讀書", "念書", "上學"],
     value: botData.education 
   },
   { 
-    keywords: ["興趣", "愛好", "喜歡", "業餘"],
+    keywords: ["興趣", "愛好", "喜歡", "業餘", "休閒", "玩", "娛樂"],
     value: botData.interests 
   },
   { 
-    keywords: ["身高", "體重", "身材", "多重", "多高", "基本資料"],
+    keywords: ["身高", "體重", "身材", "多重", "多高", "基本資料", "個人資料", "外型"],
     value: botData.personalStats 
   }
 ];
 
-// 計算文本相似度 (Jaccard相似度)
+// 計算文本相似度 (改進版)
 const calculateSimilarity = (text1, text2) => {
   // 分詞並轉小寫
   const words1 = new Set(text1.toLowerCase().match(/[\u4e00-\u9fa5a-z0-9]+/g) || []);
@@ -125,18 +125,28 @@ const calculateSimilarity = (text1, text2) => {
   return intersection.size / union.size;
 };
 
-// 智能查詢函數
+// 智能查詢函數 - 已優化
 const findBestMatch = (userText) => {
+  const lowerUserText = userText.toLowerCase();
+  
+  // 第一層：精確匹配（任何關鍵詞完全在用戶輸入中）
+  for (const category of keywordCategories) {
+    for (const keyword of category.keywords) {
+      if (lowerUserText.includes(keyword)) {
+        return category.value;
+      }
+    }
+  }
+  
+  // 第二層：相似度匹配（降低閾值到 0.15，更容易匹配）
   let bestMatch = null;
   let highestScore = 0;
   
-  // 遍歷所有類別
   for (const category of keywordCategories) {
-    // 計算用戶輸入與類別中所有關鍵詞的最高相似度
     for (const keyword of category.keywords) {
       const score = calculateSimilarity(userText, keyword);
       
-      if (score > highestScore && score > 0.25) {
+      if (score > highestScore && score > 0.15) {  // 降低閾值
         highestScore = score;
         bestMatch = category.value;
       }
