@@ -1,53 +1,50 @@
-# 泰翔AI 分身聊天機器人
+import React, { useState, useEffect, useRef } from 'react';
 
-一個互動式的聊天機器人應用，讓訪客能夠了解和交流。
+// 保持原始內容與優化視覺
+const botData = {
+  greeting: "您好！我是泰翔的分身 🤖。您可以透過下方按鈕或直接輸入想了解的內容（如：背景、作品、技能等）。請問你想先看哪一部分？",
+  
+  aboutMe: [
+    "🏠 **關於我 (個人背景)**\n您好，我是陳泰翔，出生於彰化。從小與父親同住，身為家中的長兄，這讓我培養了較強的責任感與照顧團隊的性格。",
+    "🚀 **職業起點**\n退伍後我選擇在台中的遊戲公司深耕，專注於 **3D模型製作** 與 **動態動作控制**，這段經歷為我打下了堅實的技術基礎。",
+    "🎬 **動畫與電影夢**\n2013年我決定挑戰台北，投身於國產動畫與電影專案。參與了包括《奇人密碼》與紀錄片《釋悟因》等具代表性的作品，在團隊協作中展現了高度的適應力。",
+    "🎮 **管理實務**\n2014年後，我開始帶領約 7 人的動畫部門，這讓我深刻體會到「溝通」才是推動大型專案成功的核心要素。"
+  ],
 
-## 功能特色
+  experience: [
+    "📅 **2012 ~ 2013 (賽席爾商泛力)**\n擔任 3D 美工設計，負責 3D 模型、特效與燈光控制。代表作品為《遠征三國》手遊。",
+    "📅 **2013 ~ 2014 (合邑映像)**\n擔任多媒體動畫師，專攻 3D 模型與動作製作，參與過《電影-奇人密碼》與《記錄片-釋悟因》。",
+    "📅 **2014 ~ 至今 (傳奇網路)**\n目前擔任 **多媒體開發主管**。我負責領導團隊使用 Unity 與自研編輯器製作過場動畫，並對接行銷部門製作《AE》、《Premiere》宣傳影片。我也負責審核品質與跨部門的關鍵溝通。"
+  ],
 
-- 🤖 智能關鍵詞匹配回應
-- 🎨 現代化美觀界面設計
-- ✨ 流暢的動畫效果
-- 📱 響應式設計，支持多設備
+  portfolio: "太棒了！這是我的精選作品集，歡迎點擊查看：\n\n🔗 https://jay20040121.wixsite.com/website-5\n\n裡面有更多動態展示，看完可以再回來跟我聊聊喔！",
+  
+  skills: [
+    "🛠️ **專業軟體工具**\n- 遊戲引擎：Unity\n- 3D 建模：MAYA\n- 視覺特效：After Effects、Premiere\n- 設計：Photoshop\n- 辦公：Excel、PowerPoint",
+    "🎨 **核心優勢**\n- 多媒體影像處理、電腦動畫設計\n- **AIGC 設計應用**\n- 團隊領導與跨部門諮詢"
+  ],
 
-## 技術棧
+  education: [
+    "🎓 **學歷資訊**\n- 明道大學 數位多媒體設計系 (學士)",
+  ],
 
-- **前端框架**: React 18
-- **構建工具**: Vite
-- **樣式框架**: Tailwind CSS
-- **開發服務器**: Vite Dev Server
+  interests: "📜 **我的興趣**\n- 平常除了熱衷於影像創作，我也喜歡玩桌遊與密室逃脫，這些活動能訓練邏輯思維。此外，跳舞和唱歌是我放鬆並尋找靈感的好方法！",
 
-## 快速開始
+  personalStats: "🏆 **個人基本資料**\n- 身高：174cm\n- 體重：69kg\n- 充滿活力且熱愛學習新科技！",
+  
+  contact: "📧 **聯絡資訊**\n如果您對我的背景有興趣，歡迎隨時聯絡我：\n\n信箱：**jay20040121@gmail.com**\n期待與您進一步交流！",
+  
+  unknown: "不好意思，我還在學習中 😅。您可以嘗試點擊下方的按鈕，或者直接問我「你參與過哪些作品？」或「你會哪些軟體？」"
+};
 
-### 安裝依賴
-```bash
-npm install
-```
-
-### 開發模式
-```bash
-npm run dev
-```
-
-訪問 `http://localhost:5173/` 查看應用
-
-### 生產構建
-```bash
-npm run build
-```
-
-## 項目結構
-
-```
-/
-├── src/
-│   ├── App.jsx          # 主應用組件
-│   ├── main.jsx         # 入口文件
-│   └── index.css        # 全局樣式
-├── index.html           # HTML 模板
-├── vite.config.js       # Vite 配置
-├── tailwind.config.js   # Tailwind CSS 配置
-└── package.json         # 項目依賴配置
-```
+const keywordMap = [
+  { keys: ["關於我", "背景", "是誰", "自我介紹", "泰翔"], value: botData.aboutMe },
+  { keys: ["經歷", "工作", "公司", "主管", "傳奇網路", "合邑", "賽席爾", "工作經歷"], value: botData.experience },
+  { keys: ["作品", "專案", "網址", "連結", "Wix", "website", "作品集"], value: botData.portfolio },
+  { keys: ["技能", "軟體", "專長", "工具", "會什麼", "Unity", "Maya", "專業技能", "AIGC"], value: botData.skills },
+  { keys: ["聯絡", "Email", "聯繫", "信箱", "手機"], value: botData.contact },
+  { keys: ["學歷", "學校", "大學", "畢業", "明道", "興趣"], value: [botData.education[0], botData.interests] },
+  { keys: ["身高", "體重", "身材", "多重", "多高"], value: botData.personalStats }
 ];
 
 const quickReplies = [
@@ -266,4 +263,3 @@ export default function App() {
     </div>
   );
 }
->>>>>>> a97015b (Initial commit)
