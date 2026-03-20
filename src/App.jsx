@@ -270,7 +270,7 @@ const Avatar = ({ isTyping = false }) => {
   const imgUrl = "/S__364150787.jpg";
 
   return (
-    <div className={`flex-shrink-0 w-10 h-10 rounded-full border-2 border-white shadow-sm overflow-hidden flex items-center justify-center ${imgError ? 'bg-indigo-500' : 'bg-slate-200'}`}>
+    <div className={`flex-shrink-0 w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden flex items-center justify-center ${imgError ? 'bg-indigo-500' : 'bg-slate-200'}`}>
       {!imgError ? (
         <img 
           src={imgUrl} 
