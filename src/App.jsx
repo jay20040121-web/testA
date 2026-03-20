@@ -11,23 +11,23 @@ const botData = {
       "🎬 **動畫與電影夢**\n2013年我決定挑戰台北，投身於國產動畫與電影專案。參與了包括《奇人密碼》與紀錄片《釋悟因》等具代表性的作品，在團隊協作中展現了高度的適應力。",
       "🎮 **管理實務**\n2014年後，我開始帶領約 7 人的動畫部門，這讓我深刻體會到「溝通」才是推動大型專案成功的核心要素。"
     ],
-    followUp: ["📅 我的工作經歷怎樣？", "🛠️ 你有哪些技能？", "✉️ 怎麼聯絡你？"]
+    followUp: ["🎬 了解《奇人密碼》", "📹 看看《釋悟因》紀錄片", "💼 我的工作經歷怎樣？"]
   },
 
   experience: {
     responses: [
       "📅 **2012 ~ 2013 (賽席爾商泛力)**\n擔任 3D 美工設計，負責 3D 模型、特效與燈光控制。代表作品為《遠征三國》手遊。",
       "📅 **2013 ~ 2014 (合邑映像)**\n擔任多媒體動畫師，專攻 3D 模型與動作製作，參與過《電影-奇人密碼》與《記錄片-釋悟因》。",
-      "📅 **2014 ~ 至今 (傳奇網路)**\n目前擔任 **多媒體開發主管**。我負責領導團隊使用 Unity 與自研編輯器製作過場動畫，並對接行銷部門製作《AE》、《Premiere》宣傳影片。我也負責審核品質與跨部門的關鍵溝通。"
+      "📅 **2014 ~ 至今 (傳奇網路)**\n目前擔任 **多媒體開發主管**。我負責領導團隊製作過場動畫，熱門作品有《風之國度》、《慾望王座》、《精靈樂章》等。"
     ],
-    followUp: ["🏠 了解更多我的背景？", "🛠️ 我掌握什麼技能？", "📁 看看我的作品？"]
+    followUp: ["� 探索《遠征三國》", "🎬 看看《奇人密碼》與《釋悟因》", "🎮 傳奇網路作品合集"]
   },
 
   portfolio: {
     responses: [
       "太棒了！這是我的精選作品集，歡迎點擊查看：\n\n🔗 https://jay20040121.wixsite.com/website-5\n\n裡面有更多動態展示，看完可以再回來跟我聊聊喔！"
     ],
-    followUp: ["💼 想了解我的工作經驗？", "🛠️ 看看我會什麼技能？", "✉️ 如何聯繫我？"]
+    followUp: ["🎮 《風之國度》作品", "🎮 《慾望王座》作品", "🎮 《精靈樂章》作品"]
   },
 
   skills: {
@@ -173,6 +173,15 @@ const findBestMatch = (userText) => {
 const linkDatabase = {
   "傳奇網路": "https://www.x-legend.tw/",
   "傳奇": "https://www.x-legend.tw/",
+  "慾望王座": "https://www.ero-labs.com/zh/game/throne-of-desire",
+  "王座": "https://www.ero-labs.com/zh/game/throne-of-desire",
+  "慾望": "https://www.ero-labs.com/zh/game/throne-of-desire",
+  "精靈樂章": "https://play.google.com/store/apps/details?id=com.xlegend.grandfantasia.tw&hl=zh_TW",
+  "樂章": "https://play.google.com/store/apps/details?id=com.xlegend.grandfantasia.tw&hl=zh_TW",
+  "精靈": "https://play.google.com/store/apps/details?id=com.xlegend.grandfantasia.tw&hl=zh_TW",
+  "風之國度": "https://www.x-legend.com.tw/laplace/",
+  "風": "https://www.x-legend.com.tw/laplace/",
+  "國度": "https://www.x-legend.com.tw/laplace/",
   "奇人密碼": "https://www.youtube.com/watch?v=dSQFEU3FHTw",
   "奇人": "https://www.youtube.com/watch?v=dSQFEU3FHTw",
   "釋悟因": "https://www.youtube.com/watch?v=RQECxq_ugSI",
@@ -199,6 +208,54 @@ const findSearchableKeywords = (userText) => {
     return results[0];
   }
   
+  return null;
+};
+
+// 工作關鍵詞配置 - 定義每個關鍵詞對應的動態後續問題
+const workKeywordConfig = {
+  "奇人密碼": {
+    followUp: ["🎬 告訴我更多關於《奇人密碼》的製作過程", "👥 這個專案的團隊規模有多大？", "🎨 你在其中負責了什麼工作？"]
+  },
+  "釋悟因": {
+    followUp: ["📹 這是一部紀錄片嗎？", "👤 釋悟因是誰？", "🎬 這個專案有什麼特別的地方？"]
+  },
+  "遠征三國": {
+    followUp: ["🎮 這是什麼類型的手遊？", "🎨 你在其中設計了什麼？", "📊 這個遊戲受歡迎嗎？"]
+  },
+  "風之國度": {
+    followUp: ["🎮 《風之國度》有什麼特色？", "🎬 你製作了哪些過場動畫？", "📱 什麼平台可以玩？"]
+  },
+  "慾望王座": {
+    followUp: ["🎮 《慾望王座》是什麼遊戲？", "🎬 動畫製作花了多長時間？", "👥 這是什麼類型的遊戲？"]
+  },
+  "精靈樂章": {
+    followUp: ["🎮 《精靈樂章》有什麼玩法？", "🎬 這款遊戲有多受歡迎？", "🎨 人物設計有什麼特色？"]
+  },
+  "傳奇網路": {
+    followUp: ["🏢 傳奇網路是什麼公司？", "💼 你在那裡做了多長時間？", "🎮 還有其他作品嗎？"]
+  },
+  "合邑映像": {
+    followUp: ["🏢 合邑映像是做什麼的？", "🎬 在那裡時有什麼成就？", "👥 團隊有多少人？"]
+  },
+  "賽席爾商泛力": {
+    followUp: ["🏢 這是什麼公司？", "🎮 手遊開發的經驗如何？", "💡 這段經歷對你有什麼幫助？"]
+  }
+};
+
+// 檢測訊息中的工作關鍵詞並生成動態後續問題
+const generateDynamicFollowUpQuestions = (botMessage) => {
+  const workKeywords = /(奇人密碼|釋悟因|遠征三國|風之國度|慾望王座|精靈樂章|傳奇網路|合邑映像|賽席爾商泛力)/g;
+  const matches = botMessage.match(workKeywords);
+  
+  if (matches && matches.length > 0) {
+    // 取得第一個匹配的關鍵詞（最相關）
+    const firstKeyword = matches[0];
+    if (workKeywordConfig[firstKeyword]) {
+      return workKeywordConfig[firstKeyword].followUp;
+    }
+  }
+  
+  // 如果沒有找到工作關鍵詞，返回預設問題
   return null;
 };
 
@@ -249,7 +306,7 @@ export default function App() {
   const formatMessage = (text) => {
     const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    const workKeywords = /(奇人密碼|釋悟因|遠征三國)/g;
+    const workKeywords = /(奇人密碼|釋悟因|遠征三國|風之國度|慾望王座|精靈樂章)/g;
 
     return text.split('\n').map((line, lineIdx) => (
       <div key={lineIdx} className="mb-1 last:mb-0">
@@ -287,8 +344,14 @@ export default function App() {
       await new Promise(resolve => setTimeout(resolve, 800));
       setMessages(prev => [...prev, { text: responseArray[i], sender: 'bot' }]);
     }
+    
+    // 根據訊息內容動態生成後續問題
+    const lastMessage = responseArray[responseArray.length - 1];
+    const dynamicFollowUp = generateDynamicFollowUpQuestions(lastMessage);
+    const finalFollowUp = dynamicFollowUp || followUp;
+    
     // 設置後續問題
-    setFollowUpQuestions(followUp);
+    setFollowUpQuestions(finalFollowUp);
     setIsTyping(false);
   };
 
