@@ -270,12 +270,12 @@ const Avatar = ({ isTyping = false }) => {
   const imgUrl = "/S__364150787.jpg";
 
   return (
-    <div className={`flex-shrink-0 w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden flex items-center justify-center ${imgError ? 'bg-indigo-500' : 'bg-slate-200'}`}>
+    <div className={`flex-shrink-0 w-12 h-12 rounded-full border-2 border-white shadow-sm overflow-hidden flex items-center justify-center transition-all duration-300 hover:scale-125 hover:shadow-lg cursor-pointer ${isTyping ? 'scale-90 opacity-60' : 'scale-100 opacity-100'} ${imgError ? 'bg-indigo-500' : 'bg-slate-200'}`}>
       {!imgError ? (
         <img 
           src={imgUrl} 
           alt="Avatar" 
-          className={`w-full h-full object-cover ${isTyping ? 'opacity-50' : ''}`}
+          className={`w-full h-full object-cover`}
           onError={() => setImgError(true)}
         />
       ) : (
