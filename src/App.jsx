@@ -169,6 +169,39 @@ const findBestMatch = (userText) => {
   return bestMatch;
 };
 
+// 關鍵詞到網址的映射表 - 自動搜索配置
+const linkDatabase = {
+  "傳奇網路": "https://www.x-legend.tw/",
+  "傳奇": "https://www.x-legend.tw/",
+  "奇人密碼": "https://www.youtube.com/watch?v=dSQFEU3FHTw",
+  "奇人": "https://www.youtube.com/watch?v=dSQFEU3FHTw",
+  "釋悟因": "https://www.youtube.com/watch?v=RQECxq_ugSI",
+  "悟因": "https://www.youtube.com/watch?v=RQECxq_ugSI",
+  "釋": "https://www.youtube.com/watch?v=RQECxq_ugSI",
+  "youtube": "https://www.youtube.com/",
+  "google": "https://www.google.com/",
+};
+
+// 搜索函數 - 尋找用戶輸入中的可搜索關鍵詞
+const findSearchableKeywords = (userText) => {
+  const results = [];
+  const lowerText = userText.toLowerCase();
+  
+  for (const [keyword, url] of Object.entries(linkDatabase)) {
+    if (lowerText.includes(keyword)) {
+      results.push({ keyword, url, length: keyword.length });
+    }
+  }
+  
+  // 優先返回最長的匹配 (更具體)
+  if (results.length > 0) {
+    results.sort((a, b) => b.length - a.length);
+    return results[0];
+  }
+  
+  return null;
+};
+
 const quickReplies = [
   { label: "👤 關於我", keyword: "關於我" },
   { label: "💼 工作經歷", keyword: "工作經歷" },
@@ -265,7 +298,17 @@ export default function App() {
     setInputText("");
     setFollowUpQuestions([]); // 清除舊的後續問題
 
-    // 使用智能相似度匹配代替簡單的字符串包含
+    // 先檢查是否有可搜索的關鍵詞
+    const searchResult = findSearchableKeywords(text);
+    
+    if (searchResult) {
+      // 顯示關鍵詞和搜索結果 - 只顯示連結，用戶自己點擊
+      const message = `🔍 我找到了「${searchResult.keyword}」的相關資訊，點擊以下連結前往：\n\n🔗 ${searchResult.url}\n\n有其他想了解的嗎？`;
+      sendBotMessages(message, botData.unknown.followUp);
+      return;
+    }
+
+    // 如果沒有找到搜索關鍵詞，使用智能相似度匹配
     const foundCategory = findBestMatch(text);
     
     if (foundCategory) {
